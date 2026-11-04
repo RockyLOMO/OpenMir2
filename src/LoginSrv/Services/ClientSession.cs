@@ -49,19 +49,19 @@ namespace LoginSrv.Services
                     try
                     {
                         string sMsg = string.Empty;
-                        if (!message.Msg.EndsWith("!"))
+                        if (string.IsNullOrEmpty(message.Msg) || !message.Msg.EndsWith("!"))
                         {
-                            return;
+                            continue;
                         }
                         HUtil32.ArrestStringEx(message.Msg, "#", "!", ref sMsg);
                         if (string.IsNullOrEmpty(sMsg))
                         {
-                            return;
+                            continue;
                         }
 
                         if (sMsg.Length < Messages.DefBlockSize)
                         {
-                            return;
+                            continue;
                         }
 
                         sMsg = sMsg.AsSpan()[1..sMsg.Length].ToString();
@@ -492,7 +492,8 @@ namespace LoginSrv.Services
             string sServerName = EDCode.DeCodeString(sData);
             if (!string.IsNullOrEmpty(userInfo.Account) && !string.IsNullOrEmpty(sServerName) && _sessionManager.IsLogin(userInfo.SessionID))
             {
-                GetSelGateInfo(sServerName, _configMgr.Config.sGateIPaddr, ref sSelGateIp, ref nSelGatePort);
+                string gateAddr = string.IsNullOrEmpty(_configMgr.Config.sGateIPaddr) ? _configMgr.Config.sGateAddr : _configMgr.Config.sGateIPaddr;
+                GetSelGateInfo(sServerName, gateAddr, ref sSelGateIp, ref nSelGatePort);
                 if (!string.IsNullOrEmpty(sSelGateIp) && nSelGatePort > 0)
                 {
                     if (_configMgr.Config.DynamicIPMode)
