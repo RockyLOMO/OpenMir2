@@ -1,4 +1,4 @@
-using M2Server.Actor;
+﻿using M2Server.Actor;
 using M2Server.Items;
 using OpenMir2;
 using OpenMir2.Consts;
@@ -114,6 +114,10 @@ namespace M2Server.Player
         private void ClientMerchantDlgSelect(int nParam1, string sMsg)
         {
             if (Death || Ghost)
+            {
+                return;
+            }
+            if (OpenMir2.SoloExtension.SoloExtensionHost.TryHandleNpcCommand(this, nParam1, sMsg))
             {
                 return;
             }
@@ -653,6 +657,11 @@ namespace M2Server.Player
                                         }
                                         break;
                                     case 31: // 解包物品
+                                        if (OpenMir2.SoloExtension.SoloExtensionHost.TryHandleCustomItemUse(this, userItem, stdItem))
+                                        {
+                                            SendDefMessage(Messages.SM_EAT_FAIL, 0, 0, 0, 0);
+                                            return;
+                                        }
                                         if (stdItem.AniCount == 0)
                                         {
                                             if (ItemList.Count + 6 - 1 <= Grobal2.MaxBagItem)

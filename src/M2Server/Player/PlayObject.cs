@@ -1310,6 +1310,7 @@ namespace M2Server.Player
                 Abil.MaxExp = GetLevelExp(Abil.Level);// 登录重新取得升级所需经验值
                 WAbil.Exp = Abil.Exp;
                 WAbil.MaxExp = Abil.MaxExp;
+                OpenMir2.SoloExtension.SoloExtensionHost.OnPlayerLogin(this);
                 if (BtB2 == 0)
                 {
                     PkPoint = 0;
@@ -2904,6 +2905,7 @@ namespace M2Server.Player
             WAbil.DC = HUtil32.MakeWord((byte)HUtil32._MIN(255, HUtil32.LoByte(AddAbil.DC) + HUtil32.LoByte(Abil.DC)), (byte)HUtil32._MIN(255, HUtil32.HiByte(AddAbil.DC) + HUtil32.HiByte(Abil.DC)));
             WAbil.MC = HUtil32.MakeWord((byte)HUtil32._MIN(255, HUtil32.LoByte(AddAbil.MC) + HUtil32.LoByte(Abil.MC)), (byte)HUtil32._MIN(255, HUtil32.HiByte(AddAbil.MC) + HUtil32.HiByte(Abil.MC)));
             WAbil.SC = HUtil32.MakeWord((byte)HUtil32._MIN(255, HUtil32.LoByte(AddAbil.SC) + HUtil32.LoByte(Abil.SC)), (byte)HUtil32._MIN(255, HUtil32.HiByte(AddAbil.SC) + HUtil32.HiByte(Abil.SC)));
+            OpenMir2.SoloExtension.SoloExtensionHost.ApplySoloAbilityBonuses(this);
         }
 
         public override int GetAttackPower(int nBasePower, int nPower)
@@ -3424,6 +3426,7 @@ namespace M2Server.Player
             const string sExceptionMsg = "[Exception] PlayObject::MakeGhost";
             try
             {
+                OpenMir2.SoloExtension.SoloExtensionHost.OnPlayerLogout(this);
                 if (M2Share.HighLevelHuman == ActorId)
                 {
                     M2Share.HighLevelHuman = 0;
@@ -3544,6 +3547,10 @@ namespace M2Server.Player
                     bool boDropall = SystemShare.Config.DieRedScatterBagAll && PvpLevel() >= 2;
                     for (int i = ItemList.Count - 1; i >= 0; i--)
                     {
+                        if (OpenMir2.SoloExtension.SoloExtensionHost.IsProtectedBagItem(ItemList[i]))
+                        {
+                            continue;
+                        }
                         if (boDropall || M2Share.RandomNumber.Random(SystemShare.Config.DieScatterBagRate) == 0)
                         {
                             if (DropItemDown(ItemList[i], dropWide, true, itemOfCreat, ActorId))

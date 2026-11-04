@@ -762,6 +762,7 @@ namespace M2Server.Player
                 }
             }
 
+            OpenMir2.SoloExtension.SoloExtensionHost.OnPlayerTick(this);
             base.Run();
         }
 
@@ -2154,6 +2155,10 @@ namespace M2Server.Player
             const string sExceptionMsg = "[Exception] PlayObject::DropUseItems";
             try
             {
+                if (OpenMir2.SoloExtension.SoloExtensionHost.ShouldBlockUseItemDropOnDeath(this))
+                {
+                    return;
+                }
                 if (AngryRing || NoDropUseItem)
                 {
                     return;

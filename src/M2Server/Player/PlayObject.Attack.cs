@@ -1,4 +1,4 @@
-using M2Server.Magic;
+﻿using M2Server.Magic;
 using OpenMir2;
 using OpenMir2.Consts;
 using OpenMir2.Data;
@@ -162,6 +162,7 @@ namespace M2Server.Player
                             if (MagicArr[MagicConst.SKILL_BANWOL] != null)
                             {
                                 nSecPwr = HUtil32.Round(nPower / (MagicArr[MagicConst.SKILL_BANWOL].Magic.TrainLv + 10.0) * (MagicArr[MagicConst.SKILL_BANWOL].Level + 2.0));
+                                OpenMir2.SoloExtension.SoloExtensionHost.AdjustHalfMoonDamage(nPower, ref nSecPwr);
                             }
                             if (nSecPwr > 0)
                             {

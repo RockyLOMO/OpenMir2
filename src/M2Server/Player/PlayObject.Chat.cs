@@ -365,6 +365,10 @@ namespace M2Server.Player
                     ProcessSayMsg(sData);
                     return;
                 }
+                if (OpenMir2.SoloExtension.SoloExtensionHost.TryExecuteCommand(this, sData))
+                {
+                    return;
+                }
                 if (M2Share.CommandSystem.Execute(this, sData))
                 {
                     return;

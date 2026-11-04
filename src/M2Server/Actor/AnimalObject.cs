@@ -91,10 +91,12 @@ namespace M2Server.Actor
             base.Initialize();
             LoadSayMsg();
             MonsterSayMessage(null, MonStatus.MonGen);
+            OpenMir2.SoloExtension.SoloExtensionHost.OnMonsterSpawned(this);
         }
 
         public override void Die()
         {
+            OpenMir2.SoloExtension.SoloExtensionHost.OnMonsterKilled(this, LastHiter ?? ExpHitter);
             base.Die();
             if (!SuperMan)
             {
@@ -356,6 +358,7 @@ namespace M2Server.Actor
                 }
             }
             AttackTick = AttackTick + (150 - HUtil32._MIN(130, Abil.Level * 4));
+            OpenMir2.SoloExtension.SoloExtensionHost.OnMonsterDamaged(this, hiter);
         }
 
         protected void HitMagAttackTarget(IActor targetObject, int nHitPower, int nMagPower, bool boFlag)

@@ -41,7 +41,7 @@ namespace M2Server.Actor
                 HealthTick += recoveryTick;
                 SpellTick += recoveryTick;
                 ushort n18;
-                if ((WAbil.HP < WAbil.MaxHP) && (HealthTick >= SystemShare.Config.HealthFillTime))
+                if ((WAbil.HP < WAbil.MaxHP) && (HealthTick >= SystemShare.Config.HealthFillTime) && !OpenMir2.SoloExtension.SoloExtensionHost.IsRegenDisabled(this))
                 {
                     n18 = (ushort)((WAbil.MaxHP / 75) + 1);
                     if ((WAbil.HP + n18) < WAbil.MaxHP)

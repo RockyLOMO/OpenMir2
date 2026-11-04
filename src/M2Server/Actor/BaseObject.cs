@@ -2741,6 +2741,10 @@ namespace M2Server.Actor
             Invisible = false;
             SendRefMsg(Messages.RM_TURN, Dir, CurrX, CurrY, GetFeatureToLong(), "");
             ((AnimalObject)this).MonsterSayMessage(null, MonStatus.MonGen);
+            if (this is AnimalObject animalObj)
+            {
+                OpenMir2.SoloExtension.SoloExtensionHost.OnMonsterSpawned(animalObj);
+            }
             return true;
         }
 

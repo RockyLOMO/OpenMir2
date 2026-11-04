@@ -508,7 +508,7 @@ namespace LoginSrv.Services
                 for (int i = 0; i < LoadList.Count; i++)
                 {
                     string sLineText = LoadList[i].Trim();
-                    if ((!string.IsNullOrEmpty(sLineText)) && (sLineText[i] != ';'))
+                    if (!string.IsNullOrEmpty(sLineText) && sLineText[0] != ';')
                     {
                         if (HUtil32.TagCount(sLineText, '.') == 3)
                         {

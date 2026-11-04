@@ -67,6 +67,10 @@ namespace M2Server.Npc
 
         public virtual void Click(IPlayerActor PlayObject)
         {
+            if (OpenMir2.SoloExtension.SoloExtensionHost.TryHandleNpcClick(this, PlayObject))
+            {
+                return;
+            }
             PlayObject.ScriptGotoCount = 0;
             PlayObject.ScriptGoBackLable = "";
             PlayObject.ScriptCurrLable = "";

@@ -263,56 +263,64 @@ namespace M2Server.Castle
                     WriteInteger("Defense", "RightWallHP", userCastle.RightWall.BaseObject.WAbil.HP);
                 }
             }
-            for (int i = 0; i < userCastle.Archers.Length; i++)
+            if (userCastle.Archers != null)
             {
-                ArcherUnit objUnit = userCastle.Archers[i];
-                if (objUnit.nX != 0)
+                for (int i = 0; i < userCastle.Archers.Length; i++)
                 {
-                    WriteInteger("Defense", $"Archer_{i + 1}_X", objUnit.nX);
-                }
+                    ArcherUnit objUnit = userCastle.Archers[i];
+                    if (objUnit == null) continue;
+                    if (objUnit.nX != 0)
+                    {
+                        WriteInteger("Defense", $"Archer_{i + 1}_X", objUnit.nX);
+                    }
 
-                if (objUnit.nY != 0)
-                {
-                    WriteInteger("Defense", $"Archer_{i + 1}_Y", objUnit.nY);
-                }
+                    if (objUnit.nY != 0)
+                    {
+                        WriteInteger("Defense", $"Archer_{i + 1}_Y", objUnit.nY);
+                    }
 
-                if (!string.IsNullOrEmpty(objUnit.sName))
-                {
-                    WriteString("Defense", $"Archer_{i + 1}_Name", objUnit.sName);
-                }
-                if (objUnit.BaseObject != null)
-                {
-                    WriteInteger("Defense", $"Archer_{i + 1}_HP", objUnit.BaseObject.WAbil.HP);
-                }
-                else
-                {
-                    WriteInteger("Defense", $"Archer_{i + 1}_HP", 0);
+                    if (!string.IsNullOrEmpty(objUnit.sName))
+                    {
+                        WriteString("Defense", $"Archer_{i + 1}_Name", objUnit.sName);
+                    }
+                    if (objUnit.BaseObject != null)
+                    {
+                        WriteInteger("Defense", $"Archer_{i + 1}_HP", objUnit.BaseObject.WAbil.HP);
+                    }
+                    else
+                    {
+                        WriteInteger("Defense", $"Archer_{i + 1}_HP", 0);
+                    }
                 }
             }
-            for (int i = 0; i < userCastle.Guards.Length; i++)
+            if (userCastle.Guards != null)
             {
-                ArcherUnit objUnit = userCastle.Guards[i];
-                if (objUnit.nX != 0)
+                for (int i = 0; i < userCastle.Guards.Length; i++)
                 {
-                    WriteInteger("Defense", $"Guard_{i + 1}_X", objUnit.nX);
-                }
+                    ArcherUnit objUnit = userCastle.Guards[i];
+                    if (objUnit == null) continue;
+                    if (objUnit.nX != 0)
+                    {
+                        WriteInteger("Defense", $"Guard_{i + 1}_X", objUnit.nX);
+                    }
 
-                if (objUnit.nY != 0)
-                {
-                    WriteInteger("Defense", $"Guard_{i + 1}_Y", objUnit.nY);
-                }
+                    if (objUnit.nY != 0)
+                    {
+                        WriteInteger("Defense", $"Guard_{i + 1}_Y", objUnit.nY);
+                    }
 
-                if (!string.IsNullOrEmpty(objUnit.sName))
-                {
-                    WriteString("Defense", $"Guard_{i + 1}_Name", objUnit.sName);
-                }
-                if (objUnit.BaseObject != null)
-                {
-                    WriteInteger("Defense", $"Guard_{i + 1}_HP", objUnit.BaseObject.WAbil.HP);
-                }
-                else
-                {
-                    WriteInteger("Defense", $"Guard_{i + 1}_HP", 0);
+                    if (!string.IsNullOrEmpty(objUnit.sName))
+                    {
+                        WriteString("Defense", $"Guard_{i + 1}_Name", objUnit.sName);
+                    }
+                    if (objUnit.BaseObject != null)
+                    {
+                        WriteInteger("Defense", $"Guard_{i + 1}_HP", objUnit.BaseObject.WAbil.HP);
+                    }
+                    else
+                    {
+                        WriteInteger("Defense", $"Guard_{i + 1}_HP", 0);
+                    }
                 }
             }
             Save();

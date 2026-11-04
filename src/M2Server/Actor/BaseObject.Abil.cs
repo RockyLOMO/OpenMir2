@@ -166,6 +166,7 @@ namespace M2Server.Actor
                     WAbil.MAC = 0;
                 }
             }
+            OpenMir2.SoloExtension.SoloExtensionHost.ApplySlaveAbilityBonus(this);
             //AccuracyPoint = 15;
         }
     }

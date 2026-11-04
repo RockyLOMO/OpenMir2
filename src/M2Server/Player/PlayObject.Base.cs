@@ -135,6 +135,7 @@ namespace M2Server.Player
             }
             else if (dwExp > 0)
             {
+                dwExp = OpenMir2.SoloExtension.SoloExtensionHost.ApplyTieredExpMultiplier(this, dwExp);
                 dwExp = SystemShare.Config.KillMonExpMultiple * dwExp; // 系统指定杀怪经验倍数
                 dwExp = MNKillMonExpMultiple * dwExp; // 人物指定的杀怪经验倍数
                 dwExp = HUtil32.Round(KillMonExpRate / 100.0 * dwExp);// 人物指定的杀怪经验倍数

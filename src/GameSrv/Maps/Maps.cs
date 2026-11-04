@@ -345,10 +345,19 @@
                     
                     Console.Write("\r正在读取地图数据...[{0}/{1}]", i, loadList.Count);
                 }
-                Console.Write("\n"); // 完成后换行
-                Console.SetCursorPosition(0, Console.CursorTop - 1); // 将光标移动到上一行
-                Console.Write(new string(' ', Console.WindowWidth)); // 使用空格覆盖这一行
-                Console.SetCursorPosition(0, Console.CursorTop - 1); // 再次将光标移动到上一行
+                try
+                {
+                    if (!Console.IsOutputRedirected)
+                    {
+                        Console.Write("\n");
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    }
+                }
+                catch
+                {
+                }
                 
                 // 加载地图连接点
                 for (int i = 0; i < loadList.Count; i++)

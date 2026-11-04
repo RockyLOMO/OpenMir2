@@ -1,4 +1,4 @@
-using M2Server.Player;
+﻿using M2Server.Player;
 using OpenMir2;
 using OpenMir2.Data;
 using OpenMir2.Enums;
@@ -100,7 +100,7 @@ namespace M2Server.Magic
                     }
                 }
             }
-            return false;
+            return OpenMir2.SoloExtension.SoloExtensionHost.TryCheckBagAmulet(playObject, nCount, nType, ref Idx);
         }
 
         /// <summary>
@@ -109,6 +109,10 @@ namespace M2Server.Magic
         public static void UseAmulet(PlayObject playObject, byte nCount, byte nType, short idx)
         {
             if (playObject == null)
+            {
+                return;
+            }
+            if (OpenMir2.SoloExtension.SoloExtensionHost.TryUseBagAmulet(playObject, nCount, idx))
             {
                 return;
             }

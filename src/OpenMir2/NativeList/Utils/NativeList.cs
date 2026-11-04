@@ -168,10 +168,12 @@ namespace OpenMir2.NativeList.Utils
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            for (int i = index; i < Count; i++)
+            int newCount = Count - 1;
+            for (int i = index; i < newCount; i++)
             {
                 SetAt(i, GetAt(i + 1));
             }
+            SetAt(newCount, default);
 
             Interlocked.Decrement(ref _count);
         }

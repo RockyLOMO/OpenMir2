@@ -292,6 +292,10 @@ namespace OpenMir2.Common
 
         private static Encoding GetEncoding(string fileName, Encoding defaultEncoding)
         {
+            if (!File.Exists(fileName))
+            {
+                return defaultEncoding;
+            }
             FileStream fs = new FileStream(fileName, FileMode.Open);
             Encoding targetEncoding = GetEncoding(fs, defaultEncoding);
             fs.Close();
