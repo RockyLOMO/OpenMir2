@@ -224,12 +224,12 @@ namespace GameGate.Services
                             if (clientSession == null)
                             {
                                 LogService.Debug($"ServiceId:[{message.ServiceId}] SocketId:[{message.SessionId}] Session会话不存在");
-                                return;
+                                continue;
                             }
                             if (clientSession.Session == null)
                             {
                                 LogService.Debug($"ServiceId:[{message.ServiceId}] SocketId:[{message.SessionId}] Session会话已经失效");
-                                return;
+                                continue;
                             }
                             try
                             {

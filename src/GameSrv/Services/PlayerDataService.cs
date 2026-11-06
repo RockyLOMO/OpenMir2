@@ -123,7 +123,7 @@ namespace GameSrv.Services
                 {
                     if (nIdent == Messages.DBR_SAVEHUMANRCD && nRecog == 1)
                     {
-                        // M2Share.FrontEngine.RemoveSaveList(queryId);
+                        M2Share.FrontEngine.RemoveSaveList(queryId);
                     }
                     SaveProcessList.TryDequeue(out _);
                 }

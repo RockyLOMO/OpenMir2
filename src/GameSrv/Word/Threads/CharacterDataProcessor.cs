@@ -103,25 +103,15 @@ namespace GameSrv.Word.Threads
                 {
                     continue;
                 }
-                if (!LoadCharacterData(loadDbInfo, ref boReTryLoadDb))
+                bool loaded = LoadCharacterData(loadDbInfo, ref boReTryLoadDb);
+                if (boReTryLoadDb)
+                {
+                    M2Share.FrontEngine.AddToLoadRcdList(loadDbInfo);
+                }
+                else if (!loaded)
                 {
                     M2Share.NetChannel.CloseUser(loadDbInfo.GateIdx, loadDbInfo.SocketId);
                     LogService.Debug("读取用户数据失败，踢出用户.");
-                }
-                else
-                {
-                    if (boReTryLoadDb)// 如果读取人物数据失败(数据还没有保存),则重新加入队列
-                    {
-                        HUtil32.EnterCriticalSection(UserCriticalSection);
-                        try
-                        {
-                            M2Share.FrontEngine.AddToLoadRcdList(loadDbInfo);
-                        }
-                        finally
-                        {
-                            HUtil32.LeaveCriticalSection(UserCriticalSection);
-                        }
-                    }
                 }
             }
             M2Share.FrontEngine.ClearLoadRcdTempList();

@@ -3387,13 +3387,9 @@ namespace ScriptSystem.Processings
             {
                 btSex = 1;
             }
-            IPlayerActor poseHuman = (IPlayerActor)baseObject.GetPoseCreate();
-            if (poseHuman != null)
+            if (baseObject.GetPoseCreate() is IPlayerActor poseHuman && poseHuman.Gender == (PlayerGender)btSex)
             {
-                if (poseHuman.Gender == (PlayerGender)btSex)
-                {
-                    success = true;
-                }
+                success = true;
             }
         }
 

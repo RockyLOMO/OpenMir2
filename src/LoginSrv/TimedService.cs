@@ -1,10 +1,9 @@
-﻿using LoginSrv.Services;
+using LoginSrv.Services;
 
 namespace LoginSrv
 {
     public class TimedService : BackgroundService
     {
-
         private readonly LoginServer _loginService;
         private readonly SessionServer _sessionService;
         private int _processMonSocTick;
@@ -22,10 +21,17 @@ namespace LoginSrv
             _processServerStatusTick = HUtil32.GetTickCount();
             while (!stoppingToken.IsCancellationRequested)
             {
-                _loginService.SessionClearKick();
-                _sessionService.SessionClearNoPayMent();
-                SystemStatus();
-                CheckServerStatus();
+                try
+                {
+                    _loginService.SessionClearKick();
+                    _sessionService.SessionClearNoPayMent();
+                    SystemStatus();
+                    CheckServerStatus();
+                }
+                catch (Exception ex)
+                {
+                    LogService.Error($"[TimedService] 轮询检查发生异常: {ex.Message}");
+                }
                 await Task.Delay(TimeSpan.FromMilliseconds(10), stoppingToken);
             }
         }
@@ -36,10 +42,15 @@ namespace LoginSrv
             {
                 _processMonSocTick = HUtil32.GetTickCount();
                 StringBuilder builder = new StringBuilder();
-                int serverListCount = _sessionService.ServerList.Count;
-                for (int i = 0; i < serverListCount; i++)
+                ServerSessionInfo[] serverList = _sessionService.ServerList?.ToArray() ?? Array.Empty<ServerSessionInfo>();
+                for (int i = 0; i < serverList.Length; i++)
                 {
-                    ServerSessionInfo msgServer = _sessionService.ServerList[i];
+                    ServerSessionInfo msgServer = serverList[i];
+                    if (msgServer == null)
+                    {
+                        continue;
+                    }
+
                     if (!string.IsNullOrEmpty(msgServer.ServerName))
                     {
                         builder.Append(msgServer.ServerName + "/" + msgServer.ServerIndex + "/" + msgServer.OnlineCount + "/");
@@ -93,14 +104,19 @@ namespace LoginSrv
             if (HUtil32.GetTickCount() - _processServerStatusTick > 10000)
             {
                 _processServerStatusTick = HUtil32.GetTickCount();
-                System.Collections.Generic.IList<ServerSessionInfo> serverList = _sessionService.ServerList;
-                if (!serverList.Any())
+                ServerSessionInfo[] serverList = _sessionService.ServerList?.ToArray() ?? Array.Empty<ServerSessionInfo>();
+                if (serverList.Length == 0)
                 {
                     return;
                 }
-                for (int i = 0; i < serverList.Count; i++)
+                for (int i = 0; i < serverList.Length; i++)
                 {
                     ServerSessionInfo msgServer = serverList[i];
+                    if (msgServer == null)
+                    {
+                        continue;
+                    }
+
                     string sServerName = msgServer.ServerName;
                     if (!string.IsNullOrEmpty(sServerName))
                     {
@@ -110,7 +126,15 @@ namespace LoginSrv
                             continue;
                         }
 
-                        msgServer.Socket.Close();
+                        try
+                        {
+                            msgServer.Socket?.Close();
+                        }
+                        catch
+                        {
+                            // ignore socket close exception
+                        }
+
                         if (msgServer.ServerIndex == 99)
                         {
                             if (string.IsNullOrEmpty(sServerName))
